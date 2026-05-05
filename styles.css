@@ -264,6 +264,18 @@ a {
   50% { transform: rotate(45deg) translateY(8px); }
 }
 
+@media (max-width: 900px) {
+  .hero {
+    padding-bottom: 4rem;
+  }
+
+  .hero-scroll-indicator {
+    position: static;
+    transform: none;
+    margin-top: 2.5rem;
+  }
+}
+
 /* ========================================
    PAIN SECTION
    ======================================== */
@@ -650,6 +662,14 @@ a {
   font-weight: 700;
   font-size: 0.85rem;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .testimonial-author strong {
