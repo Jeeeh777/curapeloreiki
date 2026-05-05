@@ -193,6 +193,14 @@ a {
   letter-spacing: 1px;
 }
 
+.hero-logo {
+  width: 300px;
+  height: auto;
+  margin: 0 auto 2rem;
+  border-radius: 0;
+  filter: drop-shadow(0 0 20px rgba(242, 128, 222, 0.4));
+}
+
 .hero h1 {
   font-family: var(--font-heading);
   font-size: 4.5rem;
