@@ -83,12 +83,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if (track && prevBtn && nextBtn && dotsContainer) {
     const cards = track.querySelectorAll('.testimonial-card');
     let currentIndex = 0;
-    let slidesPerView = window.innerWidth >= 768 ? 2 : 1;
-    let totalSlides = Math.ceil(cards.length / slidesPerView);
+
+    function getSlidesPerView() {
+      return window.innerWidth >= 768 ? 2 : 1;
+    }
+
+    function getTotalSlides() {
+      return Math.ceil(cards.length / getSlidesPerView());
+    }
+
+    function getSlideWidth() {
+      const containerWidth = track.parentElement.offsetWidth;
+      return containerWidth / getSlidesPerView();
+    }
 
     function createDots() {
       dotsContainer.innerHTML = '';
-      for (let i = 0; i < totalSlides; i++) {
+      const total = getTotalSlides();
+      for (let i = 0; i < total; i++) {
         const dot = document.createElement('div');
         dot.classList.add('dot');
         if (i === 0) dot.classList.add('active');
@@ -98,9 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function goToSlide(index) {
+      const total = getTotalSlides();
+      if (index >= total) index = 0;
+      if (index < 0) index = total - 1;
       currentIndex = index;
-      const cardWidth = cards[0].offsetWidth + parseFloat(getComputedStyle(cards[0]).marginLeft) + parseFloat(getComputedStyle(cards[0]).marginRight);
-      const offset = currentIndex * slidesPerView * cardWidth;
+
+      const slideWidth = getSlideWidth();
+      const offset = currentIndex * getSlidesPerView() * slideWidth;
       track.style.transform = `translateX(-${offset}px)`;
 
       dotsContainer.querySelectorAll('.dot').forEach((dot, i) => {
@@ -109,34 +125,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     prevBtn.addEventListener('click', () => {
-      currentIndex = currentIndex > 0 ? currentIndex - 1 : totalSlides - 1;
-      goToSlide(currentIndex);
+      goToSlide(currentIndex - 1);
     });
 
     nextBtn.addEventListener('click', () => {
-      currentIndex = currentIndex < totalSlides - 1 ? currentIndex + 1 : 0;
-      goToSlide(currentIndex);
+      goToSlide(currentIndex + 1);
     });
 
     // Auto-play
     let autoPlay = setInterval(() => {
-      currentIndex = currentIndex < totalSlides - 1 ? currentIndex + 1 : 0;
-      goToSlide(currentIndex);
+      goToSlide(currentIndex + 1);
     }, 5000);
 
     // Pause on hover
     track.addEventListener('mouseenter', () => clearInterval(autoPlay));
     track.addEventListener('mouseleave', () => {
       autoPlay = setInterval(() => {
-        currentIndex = currentIndex < totalSlides - 1 ? currentIndex + 1 : 0;
-        goToSlide(currentIndex);
+        goToSlide(currentIndex + 1);
       }, 5000);
     });
 
-    // Responsive
+    // Responsive: recalculate on resize
     window.addEventListener('resize', () => {
-      slidesPerView = window.innerWidth >= 768 ? 2 : 1;
-      totalSlides = Math.ceil(cards.length / slidesPerView);
       createDots();
       goToSlide(0);
     });
@@ -177,11 +187,24 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----------------------------------------
   const priceEl = document.getElementById('priceValue');
   if (priceEl) {
+    const targetPrice = 14;
+    let animated = false;
+
     const priceObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Placeholder: quando definir o preço, trocar o valor aqui
-          priceEl.textContent = '--';
+        if (entry.isIntersecting && !animated) {
+          animated = true;
+          let current = 0;
+          const duration = 1000;
+          const step = targetPrice / (duration / 16);
+          const counter = setInterval(() => {
+            current += step;
+            if (current >= targetPrice) {
+              current = targetPrice;
+              clearInterval(counter);
+            }
+            priceEl.textContent = Math.round(current);
+          }, 16);
           priceObserver.unobserve(entry.target);
         }
       });
