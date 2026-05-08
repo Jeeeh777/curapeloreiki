@@ -402,6 +402,7 @@ a {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  align-items: center;
 }
 
 .module-card::before {
@@ -419,6 +420,26 @@ a {
   transform: translateY(-4px);
   box-shadow: 0 12px 30px rgba(156, 75, 145, 0.12);
   border-color: var(--pink-soft);
+}
+
+.module-image {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 12px;
+  background: var(--pink-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--gray-light);
+  flex-shrink: 0;
+}
+
+.module-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
 }
 
 .module-number {
@@ -500,6 +521,21 @@ a {
   border-radius: 50px;
   margin-bottom: 1rem;
   letter-spacing: 1px;
+}
+
+.bonus-image {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.bonus-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
 }
 
 .bonus-card h3 {
@@ -770,6 +806,15 @@ a {
   font-family: var(--font-heading);
   font-size: 2.2rem;
   color: var(--white);
+}
+
+.offer-hero-image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  margin: 1.5rem auto 0;
+  border-radius: 12px;
+  display: block;
 }
 
 .offer-includes {
@@ -1165,6 +1210,12 @@ a {
   .module-card {
     flex-direction: column;
     gap: 0.75rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .module-image {
+    max-width: 260px;
   }
 
   .offer-includes {
